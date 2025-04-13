@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { auth } from './firebase'; 
 import { Link } from 'react-router-dom';
 import googleIcon from './assets/googleIcon.png'
 import fbIcon from './assets/fblogo.png'
@@ -9,19 +12,52 @@ const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+     const navigate = useNavigate();
+
+const  handleLogin = async()=>{
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    //const user = userCredential.user;
+    //console.log('✅ Login successful:', user.email);   
+    if (auth.currentUser.emailVerified) {
+      
+      //console.log("✅ Email verified! User logged in.");
+      //navigate('/dashboard');  
+    } else {
+      console.log("❌ Email not verified. Please check your email.");
+    }
+    
+
+  } catch (error) {
+    console.error('❌ Login error:', error.message);
+    //setError(err.message);    
+  }
+  setEmail("")
+  setPassword("")
+
+}
+
   return (
     <>
     <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
     <div className='w-1/4 h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
     <div className='text-xl text-center mt-6'>Login</div>
-    <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Email' type='email'/>
+    <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Email' type='email'
+     onChange={(e) => setEmail(e.target.value)}
+     required/>
     <div className="relative w-5/6 mt-5">
       <input
         className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm"
         placeholder="Create password"
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? 'text' : 'password'}  value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
       />
       <span
         className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
@@ -37,7 +73,7 @@ const Login = () => {
       </Link>
     </label>
  
-    <button className='w-5/6 h-10 bg-blue-500 text-white rounded-md mt-5'>Login</button>
+    <button className='w-5/6 h-10 bg-blue-500 text-white rounded-md mt-5'  onClick={handleLogin}>Login</button>
     <label className='text-xs mt-2'>
       Don't have an account?{' '}
       <Link to="/signup" className='text-blue-600 underline hover:text-blue-800'>
