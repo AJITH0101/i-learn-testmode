@@ -7,17 +7,19 @@ import googleIcon from './assets/googleIcon.png'
 import fbIcon from './assets/fblogo.png'
 import { RxEyeOpen } from "react-icons/rx";
 import { GoEyeClosed } from "react-icons/go";
+import { useSelector } from 'react-redux';
 
 const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
 
-const Login = () => {
+const Login = ({verification}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
      const navigate = useNavigate();
+     const newCount = useSelector((state)=>state.authentic.value)
 
 const  handleLogin = async()=>{
   try {
@@ -25,11 +27,13 @@ const  handleLogin = async()=>{
     //const user = userCredential.user;
     //console.log('✅ Login successful:', user.email);   
     if (auth.currentUser.emailVerified) {
-      
+      verification(true)
+
       //console.log("✅ Email verified! User logged in.");
       //navigate('/dashboard');  
     } else {
-      console.log("❌ Email not verified. Please check your email.");
+      //console.log("❌ Email not verified. Please check your email.");
+      verification(false)
     }
     
 
@@ -47,7 +51,7 @@ const  handleLogin = async()=>{
     <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
     <div className='w-1/4 h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
-    <div className='text-xl text-center mt-6'>Login</div>
+    <div className='text-xl text-center mt-6'>Login{newCount}</div>
     <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Email' type='email'
      onChange={(e) => setEmail(e.target.value)}
      required/>
@@ -68,7 +72,7 @@ const  handleLogin = async()=>{
     </div>
 
     <label className='text-xs mt-4'>    
-      <Link to="/signup" className='text-blue-600  hover:text-blue-800'>
+      <Link to="/forgot" className='text-blue-600  hover:text-blue-800'>
         Forgot password?
       </Link>
     </label>
