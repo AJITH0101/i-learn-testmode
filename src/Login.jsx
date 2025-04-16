@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { FacebookAuthProvider } from "firebase/auth";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { auth } from './firebase'; 
@@ -7,7 +9,9 @@ import googleIcon from './assets/googleIcon.png'
 import fbIcon from './assets/fblogo.png'
 import { RxEyeOpen } from "react-icons/rx";
 import { GoEyeClosed } from "react-icons/go";
-import { useSelector } from 'react-redux';
+
+import { useSelector,useDispatch } from 'react-redux';
+import { mailid } from './authSlice';
 
 const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
@@ -19,7 +23,43 @@ const Login = ({verification}) => {
   const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
      const navigate = useNavigate();
-     const newCount = useSelector((state)=>state.authentic.value)
+     const emailId = useSelector((state)=>state.authentic.value)
+     const dispatch = useDispatch()
+
+
+
+     const handleGoogleSignIn = async()=>{
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        console.log("User signed in:", user);
+        verification(true)
+        // You can now store user info or redirect
+      } catch (error) {
+        console.error("Google sign-in error", error);
+        verification(false)
+      }
+     }
+
+     const handleFacebookSignIn = async()=>{
+      const provider = new FacebookAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        console.log("User signed in with Facebook:", user);
+        verification(true)
+        // You can now store user info or redirect
+      } catch (error) {
+        console.error("Facebook sign-in error", error);
+        verification(false)
+      }
+     }
+
+
+
+
+
 
 const  handleLogin = async()=>{
   try {
@@ -35,14 +75,14 @@ const  handleLogin = async()=>{
       //console.log("❌ Email not verified. Please check your email.");
       verification(false)
     }
-    
+     setEmail("")
+  setPassword("")
 
   } catch (error) {
     console.error('❌ Login error:', error.message);
     //setError(err.message);    
   }
-  setEmail("")
-  setPassword("")
+ 
 
 }
 
@@ -51,7 +91,7 @@ const  handleLogin = async()=>{
     <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
     <div className='w-1/4 h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
-    <div className='text-xl text-center mt-6'>Login{newCount}</div>
+    <div className='text-xl text-center mt-6'>Login</div>
     <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Email' type='email'
      onChange={(e) => setEmail(e.target.value)}
      required/>
@@ -73,7 +113,8 @@ const  handleLogin = async()=>{
 
     <label className='text-xs mt-4'>    
       <Link to="/forgot" className='text-blue-600  hover:text-blue-800'>
-        Forgot password?
+      <div onClick={() => dispatch(mailid(email))} >Forgot password?</div>
+        
       </Link>
     </label>
  
@@ -87,13 +128,15 @@ const  handleLogin = async()=>{
     <label className='text-md text-stone-500 mt-3'>Or</label>
 
       <div className='relative w-full h-14 flex justify-center'>
-        <button className='w-5/6 h-10 border border-stone-500 text-xs text-stone-500 rounded-md mt-1 flex items-center  gap-14'>
+        <button className='w-5/6 h-10 border border-stone-500 text-xs text-stone-500 rounded-md mt-1 flex items-center  gap-14'
+        onClick={handleGoogleSignIn}>
         <img src={googleIcon} alt='google' className='w-5 h-5 ml-2' />
         Login with Google
         </button>
       </div>
         <div className='relative w-full h-12 flex justify-center'>
-        <button className='w-5/6 h-10 bg-blue-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'>
+        <button className='w-5/6 h-10 bg-blue-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
+        onClick={handleFacebookSignIn}>
         <img src={fbIcon} alt='google' className='w-6 h-6 ml-2' />
         Login with Facebook
         </button>

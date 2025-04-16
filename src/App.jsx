@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import Login from './Login'; // create this component
 import DashBoard from './DashBoard';
 import Forgot from './Forgot';
+import Trial from './Trial';
 import './App.css'
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
     <>
       <Provider store={store}>
      <Routes>
+      <Route path='/' element={<Trial />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/forgot" element={<Forgot />} />
       <Route path="/login" element={<Login verification={checkVerification}/>} /> 

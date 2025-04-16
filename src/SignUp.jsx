@@ -33,7 +33,7 @@ const SignUp = () => {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      //await sendEmailVerification(userCredential.user);
+      await sendEmailVerification(userCredential.user);
       console.log("User created:", userCredential.user); 
  
      

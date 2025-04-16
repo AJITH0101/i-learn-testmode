@@ -4,14 +4,18 @@ export const authSlice = createSlice({
     name:"authentication",
     initialState: {
     value: 0,
+    mail:"",
     },
     reducers:{
-        increment: (state) => {
-            state.value += 1
+        increment: (state,action) => {
+            state.value += action.payload
+        },
+        mailid:(state,action)=>{
+            state.mail= action.payload
         }
     }
 
 })
 
-export const {increment} = authSlice.actions
+export const {increment, mailid} = authSlice.actions
 export default authSlice.reducer
