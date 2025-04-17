@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import { Routes, Route } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux'
@@ -36,9 +37,9 @@ const App = () => {
 
 
   useEffect(() => {
-    if (location.pathname !== '/') {
-      navigate('/login');
-    }
+   // if (location.pathname !== '/') {
+      navigate('/');
+    //}
   }, []);
 
   return (
@@ -46,7 +47,7 @@ const App = () => {
       <Provider store={store}>
      <Routes>
       <Route path='/' element={<Trial />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path="/signup" element={<SignUp verification={checkVerification}/>} />
       <Route path="/forgot" element={<Forgot />} />
       <Route path="/login" element={<Login verification={checkVerification}/>} /> 
       <Route path="/dashboard"  element={<PrivateRoute auth={isAuthenticated}><DashBoard /></PrivateRoute>}/> 

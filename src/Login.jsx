@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { FacebookAuthProvider } from "firebase/auth";
+import { handleGoogleSignIn } from './googleSignIn.js';
+import { handleFacebookSignIn } from './facebooksignin.js';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { IoIosClose } from "react-icons/io";
+import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase'; 
 import { Link } from 'react-router-dom';
 import googleIcon from './assets/googleIcon.png'
 import fbIcon from './assets/fblogo.png'
 import { RxEyeOpen } from "react-icons/rx";
 import { GoEyeClosed } from "react-icons/go";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 
 import { useSelector,useDispatch } from 'react-redux';
 import { mailid } from './authSlice';
 
 const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
+const closeIcon = <IoIosClose />
 
 const Login = ({verification}) => {
   const [email, setEmail] = useState('');
@@ -26,79 +32,75 @@ const Login = ({verification}) => {
      const emailId = useSelector((state)=>state.authentic.value)
      const dispatch = useDispatch()
 
-
-
-     const handleGoogleSignIn = async()=>{
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log("User signed in:", user);
-        verification(true)
-        // You can now store user info or redirect
-      } catch (error) {
-        console.error("Google sign-in error", error);
-        verification(false)
+      const handleGoogleClick = async()=>{
+        await handleGoogleSignIn(verification);        
       }
-     }
-
-     const handleFacebookSignIn = async()=>{
-      const provider = new FacebookAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log("User signed in with Facebook:", user);
-        verification(true)
-        // You can now store user info or redirect
-      } catch (error) {
-        console.error("Facebook sign-in error", error);
-        verification(false)
+      const handleFaceBookClick = async()=>{
+        await handleFacebookSignIn(verification)
+        
       }
-     }
-
-
-
-
 
 
 const  handleLogin = async()=>{
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    //const user = userCredential.user;
-    //console.log('✅ Login successful:', user.email);   
-    if (auth.currentUser.emailVerified) {
-      verification(true)
+  if(email.trim() !== "" && password.trim() !== ""){
 
-      //console.log("✅ Email verified! User logged in.");
-      //navigate('/dashboard');  
-    } else {
-      //console.log("❌ Email not verified. Please check your email.");
-      verification(false)
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+       //toast.success("Login Success");
+       verification(true)  
+
+     /* 
+      setTimeout(()=>{
+        if (auth.currentUser.emailVerified) {
+          verification(true)  
+        } else {    
+          verification(false)
+        }
+      },2000)*/
+      
+       setEmail("")
+        setPassword("")
+  
+    } catch (error) {
+      console.error('❌ Login error:', error.message);
+      //setError(err.message);    
     }
-     setEmail("")
-  setPassword("")
-
-  } catch (error) {
-    console.error('❌ Login error:', error.message);
-    //setError(err.message);    
   }
+  else{
+    toast.error("Please enter valid email and password");
+  }
+ 
  
 
 }
 
   return (
     <>
+
     <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
+    <ToastContainer />
     <div className='w-1/4 h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
-    <div className='text-xl text-center mt-6'>Login</div>
-    <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Email' type='email'
-     onChange={(e) => setEmail(e.target.value)}
-     required/>
+    <div className="w-full relative flex justify-center items-center py-2 mt-2">
+  <div className="text-xl text-center">Login</div>
+  <div className="absolute right-4 top-1 text-2xl cursor-pointer">
+    {closeIcon}
+  </div>
+</div>
+   
+   <form className='w-7/8 h-10 mt-5 rounded-lg px-2 text-sm'>
+    
+      <input className='w-full h-10 border border-stone-300 rounded-lg px-2 text-sm'  placeholder='Email' type='email'
+      onChange={(e) => setEmail(e.target.value)}
+      autoComplete="email"
+      name='email'
+      required/>
+     </form>
     <div className="relative w-5/6 mt-5">
       <input
         className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm"
-        placeholder="Create password"
+        placeholder="Create password" 
+
         type={showPassword ? 'text' : 'password'}  value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -129,14 +131,14 @@ const  handleLogin = async()=>{
 
       <div className='relative w-full h-14 flex justify-center'>
         <button className='w-5/6 h-10 border border-stone-500 text-xs text-stone-500 rounded-md mt-1 flex items-center  gap-14'
-        onClick={handleGoogleSignIn}>
+        onClick={handleGoogleClick}>
         <img src={googleIcon} alt='google' className='w-5 h-5 ml-2' />
         Login with Google
         </button>
       </div>
         <div className='relative w-full h-12 flex justify-center'>
         <button className='w-5/6 h-10 bg-blue-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
-        onClick={handleFacebookSignIn}>
+        onClick={handleFaceBookClick}>
         <img src={fbIcon} alt='google' className='w-6 h-6 ml-2' />
         Login with Facebook
         </button>
