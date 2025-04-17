@@ -46,24 +46,12 @@ const  handleLogin = async()=>{
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-       //toast.success("Login Success");
-       verification(true)  
-
-     /* 
-      setTimeout(()=>{
-        if (auth.currentUser.emailVerified) {
-          verification(true)  
-        } else {    
-          verification(false)
-        }
-      },2000)*/
-      
-       setEmail("")
+         verification(true)        
+        setEmail("")
         setPassword("")
   
     } catch (error) {
-      console.error('❌ Login error:', error.message);
-      //setError(err.message);    
+      toast.error("Login Error");      
     }
   }
   else{
@@ -84,7 +72,9 @@ const  handleLogin = async()=>{
     <div className="w-full relative flex justify-center items-center py-2 mt-2">
   <div className="text-xl text-center">Login</div>
   <div className="absolute right-4 top-1 text-2xl cursor-pointer">
-    {closeIcon}
+  <Link to="/" > {closeIcon}
+  </Link>
+   
   </div>
 </div>
    

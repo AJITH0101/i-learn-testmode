@@ -83,7 +83,8 @@ const SignUp = ({verification}) => {
     <div className="w-full relative flex justify-center items-center py-2 mt-2">
   <div className="text-xl text-center">Signup</div>
   <div className="absolute right-4 top-1 text-2xl cursor-pointer">
-    {closeIcon}
+     <Link to="/" > {closeIcon}
+     </Link>
   </div>
 </div>
 

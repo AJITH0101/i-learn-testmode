@@ -60,7 +60,8 @@ navigate("/login")
             <div className="w-full relative flex  py-2">
                 <div className=' font-semibold text-xl mt-8 font-poppins text-stone-700'>Password Reset</div>
               <div className="absolute right-4 top-8 text-2xl cursor-pointer">
-                {closeIcon}
+                 <Link to="/" > {closeIcon}
+                    </Link>
               </div>
             </div>
 
