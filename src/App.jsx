@@ -11,6 +11,11 @@ import DashBoard from './DashBoard';
 import Forgot from './Forgot';
 import Trial from './Trial';
 import './App.css'
+import Gemini from './ai-interface/Gemini';
+import TextToSpeech from './ai-interface/TextToSpeech';
+import SpeechToText from './SpeechToText';
+import MyAudioRecorder from './ai-interface/MyAudioRecorder';
+
 
 const App = () => {
   const[isAuthenticated, setIsAuthenticated] = useState(false)
@@ -44,7 +49,10 @@ const App = () => {
 
   return (
     <>
-      <Provider store={store}>
+
+   <Provider store={store}>
+
+<MyAudioRecorder/> 
      <Routes>
       <Route path='/' element={<Trial />} />
       <Route path="/signup" element={<SignUp verification={checkVerification}/>} />
