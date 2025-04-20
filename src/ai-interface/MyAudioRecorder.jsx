@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const MyAudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -7,22 +7,31 @@ const MyAudioRecorder = () => {
   const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
 
+
+
   // Start recording
   const startRecording = async () => {
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaStream.current = stream;
+
+      //Clear previous record
+      audioChunks.current = [];
       // Initialize the MediaRecorder
-      mediaRecorder.current = new MediaRecorder(stream);
+      mediaRecorder.current = new MediaRecorder(stream)
+      
+
       mediaRecorder.current.ondataavailable = (event) => {
         audioChunks.current.push(event.data);
       };
+
       mediaRecorder.current.onstop = () => {
         const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(audioUrl); // Set the audio URL to play the recorded file
       };
+
       mediaRecorder.current.start();
       setIsRecording(true);
     } catch (error) {
@@ -30,8 +39,11 @@ const MyAudioRecorder = () => {
     }
   };
 
+
+
   // Stop recording
   const stopRecording = () => {
+    
     mediaRecorder.current.stop();
     mediaStream.current.getTracks().forEach((track) => track.stop());
     setIsRecording(false);

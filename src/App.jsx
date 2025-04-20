@@ -15,6 +15,8 @@ import Gemini from './ai-interface/Gemini';
 import TextToSpeech from './ai-interface/TextToSpeech';
 import SpeechToText from './SpeechToText';
 import MyAudioRecorder from './ai-interface/MyAudioRecorder';
+import Navbar from './Navbar';
+
 
 
 const App = () => {
@@ -51,8 +53,16 @@ const App = () => {
     <>
 
    <Provider store={store}>
+{/* <div className='w-full h-[100vh]'> */}
 
-<MyAudioRecorder/> 
+     <div className='w-full h-12 fixed z-10'>
+      <Navbar/> 
+    </div> 
+  
+   
+
+{/* <MyAudioRecorder/>  */}
+{/* <TextToSpeech/> */}
      <Routes>
       <Route path='/' element={<Trial />} />
       <Route path="/signup" element={<SignUp verification={checkVerification}/>} />
@@ -60,8 +70,11 @@ const App = () => {
       <Route path="/login" element={<Login verification={checkVerification}/>} /> 
       <Route path="/dashboard"  element={<PrivateRoute auth={isAuthenticated}><DashBoard /></PrivateRoute>}/> 
 
-    </Routes>
+    </Routes>  
+    {/* </div> */}
     </Provider>
+  
+  
     </>
   )
 }
