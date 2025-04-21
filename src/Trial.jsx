@@ -14,8 +14,12 @@ const Trial = () => {
     const navigate = useNavigate()
     const navigateToLogin = ()=>{
         navigate("/login")
-
     }
+
+    const navigateTo = (path)=>{
+      navigate(path)
+    }
+    
   return (
     <>
 
@@ -23,7 +27,7 @@ const Trial = () => {
     <div className='w-full min-h-screen flex justify-center items-center py-10'>
   <div className='grid grid-cols-2 md:grid-cols-4 gap-4 px-4'>
     {/* Card 1 */}
-    <div className='lg:w-68 lg:h-68 md:w-72 md:h-72 w-40 h-40 border border-stone-500 bg-stone-900 rounded-lg hover:scale-105 hover:shadow-lg transition-transform duration-300 ease-in-out'>
+    <div className='lg:w-68 lg:h-68 md:w-72 md:h-72 w-40 h-40 border border-stone-500 bg-stone-900 rounded-lg hover:scale-105 hover:shadow-lg transition-transform duration-300 ease-in-out' onClick={()=>navigateTo("/talk")}>
       <div className='w-full h-3/4 flex justify-center'>
         <img src={talking} alt='talking' className='w-4/5 h-4/5' />
       </div>
@@ -63,7 +67,7 @@ const Trial = () => {
     </div>
    
     </div>
-<div className='fixed bottom-0 left-0 w-full h-12 bg-stone-800 border-t border-stone-600 z-50 md:hidden lg:hidden'><Taskbar/> </div>
+    {/* <div className='fixed bottom-0 left-0 w-full h-12 bg-stone-800 border-t border-stone-600 z-10 md:hidden lg:hidden'><Taskbar/> </div> */}
      
      </div>
     </>

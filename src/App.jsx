@@ -16,6 +16,14 @@ import TextToSpeech from './ai-interface/TextToSpeech';
 import SpeechToText from './SpeechToText';
 import MyAudioRecorder from './ai-interface/MyAudioRecorder';
 import Navbar from './Navbar';
+import Learn from './Learn';
+import GetPro from './GetPro';
+import Call from './Call';
+import Discover from './Discover';
+import Taskbar from './Taskbar';
+import TalkAboutAnything from './TalkAboutAnything';
+import Voicechat from './Voicechat';
+
 
 
 
@@ -58,13 +66,21 @@ const App = () => {
      <div className='w-full h-12 fixed z-10'>
       <Navbar/> 
     </div> 
-  
+   <div className='fixed bottom-0 left-0 w-full h-12 bg-stone-900 border border-stone-600 z-10 md:hidden lg:hidden'><Taskbar/> </div>
+       
+
    
 
 {/* <MyAudioRecorder/>  */}
 {/* <TextToSpeech/> */}
      <Routes>
       <Route path='/' element={<Trial />} />
+      <Route path='/talk' element={<TalkAboutAnything />} />
+      <Route path='/talk/voicechat' element={<Voicechat />} />
+      <Route path='/learn' element={<Learn />} />
+      <Route path='/pro' element={<GetPro/>} />
+      <Route path='/call' element={<Call/>} />
+      <Route path='/discover' element={<Discover/>} />
       <Route path="/signup" element={<SignUp verification={checkVerification}/>} />
       <Route path="/forgot" element={<Forgot />} />
       <Route path="/login" element={<Login verification={checkVerification}/>} /> 

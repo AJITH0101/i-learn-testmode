@@ -12,20 +12,20 @@ import { GoogleGenAI } from "@google/genai";
 
 
 
-const Gemini = () => {
+const Gemini = ({request}) => {
     const ai = new GoogleGenAI({ apiKey: "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw" });
 
     useEffect(()=>{
 
-        fetchAPI();
+        fetchAPI(request);
         },[])
 
-async function fetchAPI() {
+const fetchAPI = async(req)=> {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: "can you teach me english, 'Reminder: don't exceed the answer beyond 30 words' ",
+    contents: req,
   });
-  console.log(response.text);
+ console.log("waiting response: ",response.text);
 }
 
 
