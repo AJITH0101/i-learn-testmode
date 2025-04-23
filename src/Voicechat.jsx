@@ -19,6 +19,9 @@ import {
  
 } from '@chatscope/chat-ui-kit-react';
 import Gemini from './ai-interface/Gemini'
+import TextToSpeech from './ai-interface/TextToSpeech.jsx';
+import SpeechToText from './SpeechToText.jsx';
+import MyAudioRecorder from './ai-interface/MyAudioRecorder.jsx';
 
 const Voicechat = () => {
 
@@ -27,6 +30,8 @@ const Voicechat = () => {
   const[statusIndicator,setStatusIndicator]= useState(false)
   const[timeStamp, setTimeStamp] = useState("")
   const[lastActive,setLastActive] = useState()
+  const[testAudio,setTestAudio] = useState(true)
+  const[processAudio,setProcessAudio]= useState()
 
  
 
@@ -125,9 +130,19 @@ return getTime
 
     }
 
+
+    const recievedAudio=(audioData)=>{
+      console.log(audioData.type);
+      setProcessAudio(audioData.type)
+
+    }
+
     
   return (
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
+      <MyAudioRecorder audioFile={recievedAudio}/>
+      <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
+      <SpeechToText getAudio={processAudio}/>
      
         <div className="lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
@@ -137,9 +152,13 @@ return getTime
                 <ConversationHeader.Content userName='Sani' info={`${statusIndicator ? "online" : `last active: ${timeStamp}`} `}>
 
                 </ConversationHeader.Content>
+               
               </ConversationHeader>
 
             <MessageList>
+              <div className='w-44 h-10 fixed'>
+                {statusIndicator && <TypingIndicator content='processing..'/>}   
+              </div>
             
               {/* {messages.map((msg,id)=>{<div key={id}>{msg}</div>})}  */}
               {messages.map((msg,index)=>( 
@@ -156,7 +175,7 @@ return getTime
               
               </Message>
               ))}
-                 {statusIndicator && <TypingIndicator content='processing..'/>}
+              
 
             </MessageList>
 
@@ -174,7 +193,7 @@ return getTime
         <div className='w-full h-auto'>
           <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
           <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button>
-          <button className='w-24 h-10 border border-stone-500 text-white' onClick={lastSeenTime}>last seen</button>
+          
         </div>
         
     </div>

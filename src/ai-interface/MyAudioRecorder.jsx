@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const MyAudioRecorder = () => {
+const MyAudioRecorder = ({audioFile}) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
+  const[recordAudio,setRecordAudio] = useState()
   const mediaStream = useRef(null);
   const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
+  
 
 
 
@@ -29,7 +31,12 @@ const MyAudioRecorder = () => {
       mediaRecorder.current.onstop = () => {
         const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
+
+
+        //setRecordAudio(audioBlob)
+        audioFile(audioBlob)
         setAudioUrl(audioUrl); // Set the audio URL to play the recorded file
+        
       };
 
       mediaRecorder.current.start();
@@ -47,6 +54,8 @@ const MyAudioRecorder = () => {
     mediaRecorder.current.stop();
     mediaStream.current.getTracks().forEach((track) => track.stop());
     setIsRecording(false);
+   
+
   };
 
   return (
@@ -57,14 +66,14 @@ const MyAudioRecorder = () => {
         {!isRecording ? (
           <button
             onClick={startRecording}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded z-10"
           >
             Start Recording
           </button>
         ) : (
           <button
             onClick={stopRecording}
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="bg-red-500 text-white px-4 py-2 rounded z-10"
           >
             Stop Recording
           </button>
