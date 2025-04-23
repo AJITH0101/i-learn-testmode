@@ -23,7 +23,7 @@ import Gemini from './ai-interface/Gemini'
 const Voicechat = () => {
 
   const[messages,setMessages] = useState([])
-  const[getMessage,setGetMessage] = useState()
+  const[getMessage,setGetMessage] = useState("")
   const[statusIndicator,setStatusIndicator]= useState(false)
   const[timeStamp, setTimeStamp] = useState("")
   const[lastActive,setLastActive] = useState()
@@ -31,8 +31,7 @@ const Voicechat = () => {
  
 
   useEffect(()=>{
-    let date = new Date();
-    let getMins = date.getMinutes()
+   
     manageDate()
     fetchLastSeen()
     
@@ -41,15 +40,20 @@ const Voicechat = () => {
 
 
     const handleSend=(e)=>{
-      // var getDate = new Date()
-      // const getHours = getDate.getHours()
-      // const getMins = getDate.getMinutes()
+
+      const date = new Date();
+      const getTime = date.toLocaleString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+ 
       setMessages(prev =>[
         ...prev,
         {
           message: e,
           sender: "ajith",
-          sentTime: "just now",
+          sentTime: getTime,
           direction: "outgoing",
           position: "single",   
         
@@ -74,18 +78,12 @@ const Voicechat = () => {
         minute: "2-digit",
     });
 
-    let [getHours, getMins] = getTime.split(":")
-    if(getMins.includes("AM")){
-      getMins = getMins.replace("AM", "")
-    }
-    else{
-      getMins = getMins.replace("PM", "").trim();
-    }
+   
   
 setTimeStamp(getTime)
-    saveLastSeen(getHours,getMins)      
+   // saveLastSeen(getHours,getMins)      
    // setTimeStamp(getTime)
-    console.log(typeof(getHours));
+   
     
 return getTime
      
