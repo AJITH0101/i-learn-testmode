@@ -22,6 +22,7 @@ import Gemini from './ai-interface/Gemini'
 import TextToSpeech from './ai-interface/TextToSpeech.jsx';
 import SpeechToText from './SpeechToText.jsx';
 import MyAudioRecorder from './ai-interface/MyAudioRecorder.jsx';
+import RecordVoice from '../RecordVoice.jsx';
 
 const Voicechat = () => {
 
@@ -140,7 +141,8 @@ return getTime
     
   return (
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
-      <MyAudioRecorder audioFile={recievedAudio}/>
+      {/* <MyAudioRecorder audioFile={recievedAudio}/> */}
+      <RecordVoice/>
       <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
       <SpeechToText getAudio={processAudio}/>
      
