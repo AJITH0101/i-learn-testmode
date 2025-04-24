@@ -44,6 +44,7 @@ const Voicechat = () => {
   const[testAudio,setTestAudio] = useState(true)
   const[processAudio,setProcessAudio]= useState("")
   const[voiceButton,setVoiceButton] = useState(false)
+  const [fullText,setFulText]=useState("")
 
  
 
@@ -54,7 +55,9 @@ const Voicechat = () => {
     
   },[])
 
+useEffect(()=>{
 
+},[])
 
     const handleSend=(e)=>{
 
@@ -74,7 +77,7 @@ const Voicechat = () => {
         minute: "2-digit",
     });
 
- 
+      setFulText(processAudio)
       setMessages(prev =>[
         ...prev,
         {
@@ -88,7 +91,7 @@ const Voicechat = () => {
 
       ])
       setProcessAudio("") 
-        console.log("Time",getHours,getMins);   
+       // console.log("Time",getHours,getMins);   
             
     }
 
@@ -151,9 +154,8 @@ return getTime
          }   
       ]) 
 
-      setGetMessage("")
-      setTimeStamp(getTime)
-    
+      //setGetMessage("")
+      setTimeStamp(getTime)   
 
     }
 
@@ -201,14 +203,25 @@ return getTime
       setProcessAudio("")
     }
 
+    const clearAllChat=()=>{
+      setMessages([])
+    }
+
+    const responseToText=(e)=>{
+      setGetMessage(e)
+      handleSendData()
+      //console.log(e);
+      
+    }
+
     
   return (
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
-      {/* <MyAudioRecorder audioFile={recievedAudio}/> */}
+  
       <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
       <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
-      {/* <SpeechToText getAudio={processAudio}/> */}
-     
+
+     <Gemini request={fullText} aiResponse={responseToText}/>
         <div className="relative lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
@@ -264,13 +277,14 @@ return getTime
      
         </div>
         <div className={`lg:w-1/4 lg:h-auto md:w-1/4 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
+        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clearAllChat}>Clear chat</button>
         <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div>
         <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
         <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 
         </div>
         <div className='w-full h-auto'>
-          <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
-          <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button>
+          {/* <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
+          <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button> */}
           
         </div>
         

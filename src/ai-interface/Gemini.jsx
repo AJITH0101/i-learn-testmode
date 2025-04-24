@@ -12,20 +12,24 @@ import { GoogleGenAI } from "@google/genai";
 
 
 
-const Gemini = ({request}) => {
+const Gemini = ({request, aiResponse}) => {
     const ai = new GoogleGenAI({ apiKey: "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw" });
 
     useEffect(()=>{
+      const limit = request 
+      console.log(limit);
 
-        fetchAPI(request);
-        },[])
+        fetchAPI(limit);
+        },[request])
 
 const fetchAPI = async(req)=> {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
     contents: req,
   });
- console.log("waiting response: ",response.text);
+  const filteredText = response.text.replace(/\*\*/g, "");
+ //console.log(filteredText);
+ aiResponse(filteredText)
 }
 
 
