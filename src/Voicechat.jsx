@@ -23,6 +23,16 @@ import TextToSpeech from './ai-interface/TextToSpeech.jsx';
 import SpeechToText from './SpeechToText.jsx';
 import MyAudioRecorder from './ai-interface/MyAudioRecorder.jsx';
 import RecordVoice from '../RecordVoice.jsx';
+import { MdOutlineKeyboardVoice } from "react-icons/md";
+import { BsSendCheck } from "react-icons/bs";
+import { BsSendX } from "react-icons/bs";
+import { MdOutlineClear } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+const voiceIcon = <MdOutlineKeyboardVoice size={28} />
+const msgEnable = <BsSendCheck size={20} />
+const msgDisable = <BsSendX size={20}/>
+const clearChat = <MdOutlineClear  size={20}/>
+const closeIcon = <IoClose size={20}/>
 
 const Voicechat = () => {
 
@@ -32,7 +42,8 @@ const Voicechat = () => {
   const[timeStamp, setTimeStamp] = useState("")
   const[lastActive,setLastActive] = useState()
   const[testAudio,setTestAudio] = useState(true)
-  const[processAudio,setProcessAudio]= useState()
+  const[processAudio,setProcessAudio]= useState("")
+  const[voiceButton,setVoiceButton] = useState(false)
 
  
 
@@ -47,7 +58,10 @@ const Voicechat = () => {
 
     const handleSend=(e)=>{
 
-      const date = new Date();
+      if(processAudio.trim()==="")
+        return
+
+          const date = new Date();
       const getTime = date.toLocaleString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -57,7 +71,7 @@ const Voicechat = () => {
       setMessages(prev =>[
         ...prev,
         {
-          message: e,
+          message: processAudio,
           sender: "ajith",
           sentTime: getTime,
           direction: "outgoing",
@@ -66,8 +80,16 @@ const Voicechat = () => {
         }
 
       ])
-        console.log("Time",getHours,getMins);        
+      setProcessAudio("") 
+        console.log("Time",getHours,getMins);   
+            
     }
+
+
+
+
+
+
 
 
     const senderTyping=(e)=>{
@@ -123,6 +145,7 @@ return getTime
 
       setGetMessage("")
       setTimeStamp(getTime)
+    
 
     }
 
@@ -138,15 +161,30 @@ return getTime
 
     }
 
+    const clickToSpeak=()=>{
+      setVoiceButton(true)
+      console.log("voice button clicked");
+      
+    }
+
+    const turnOffSpeak=()=>{
+      setVoiceButton(false)
+    }
+
+    const handlefetchAudio=(e)=>{
+      setProcessAudio(e)
+   
+    }
+
     
   return (
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
       {/* <MyAudioRecorder audioFile={recievedAudio}/> */}
-      <RecordVoice/>
+      <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
       <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
-      <SpeechToText getAudio={processAudio}/>
+      {/* <SpeechToText getAudio={processAudio}/> */}
      
-        <div className="lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
+        <div className="relative lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
               <ConversationHeader>
@@ -183,14 +221,27 @@ return getTime
 
 
 
-            <MessageInput placeholder='Type here...' onSend={handleSend}
-           attachButton={false}
+<MessageInput placeholder='Type here...' sendButton={false}
+           attachButton={false} value={processAudio} onChange={handlefetchAudio}
+           onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSend();
+            }
+          }}
             >
-
             </MessageInput>
 
+
+           
           </ChatContainer>
         </MainContainer>
+     
+     
+        </div>
+        <div className={`lg:w-1/4 lg:h-auto md:w-1/4 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
+        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1`} onClick={clickToSpeak}>{clearChat}</div>
+        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1`} onClick={clickToSpeak}>{voiceIcon}</div>
+        <div className={`text-blue-300 px-1`} onClick={handleSend} >{msgEnable}</div> 
         </div>
         <div className='w-full h-auto'>
           <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 

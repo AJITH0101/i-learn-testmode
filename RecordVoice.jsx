@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function RecordVoice() {
+const RecordVoice = ({enableSpeech,stopSpeaking,audioFetched})=> {
+   const[voiceState,setVoiceState]= useState(false)
+
+    useEffect(()=>{
+        if(enableSpeech){
+            handleSpeech()
+        }
+    },[enableSpeech])
+
+
   const handleSpeech = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -16,7 +25,8 @@ function RecordVoice() {
 
     recognition.onresult = (event) => {
       const spokenText = event.results[0][0].transcript;
-      console.log("You said:", spokenText);
+     console.log(spokenText);
+     audioFetched(spokenText)
     };
 
     recognition.onerror = (event) => {
@@ -24,6 +34,10 @@ function RecordVoice() {
     };
 
     recognition.start();
+
+    recognition.onend = () => {
+        stopSpeaking(false)
+      };
   };
 
   return (
