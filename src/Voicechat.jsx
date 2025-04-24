@@ -58,8 +58,15 @@ const Voicechat = () => {
 
     const handleSend=(e)=>{
 
+
       if(processAudio.trim()==="")
         return
+  const audio = new Audio('/sendSound.wav')
+  audio.play().catch((err) => {
+    console.log("Playback failed:", err);
+  });
+
+
 
           const date = new Date();
       const getTime = date.toLocaleString([], {
@@ -121,6 +128,7 @@ return getTime
 
 
     const handleSendData=()=>{
+    
       const date = new Date();
       const getTime = date.toLocaleString([], {
         hour: "2-digit",
@@ -163,17 +171,34 @@ return getTime
 
     const clickToSpeak=()=>{
       setVoiceButton(true)
+      const audio = new Audio('/mic.wav')
+      audio.play().catch((err) => {
+        console.log("Playback failed:", err);
+      });
       console.log("voice button clicked");
       
     }
 
     const turnOffSpeak=()=>{
+      const audio = new Audio('/mic.wav')
+      audio.play().catch((err) => {
+        console.log("Playback failed:", err);
+      });
+      console.log("voice button clicked");
+
       setVoiceButton(false)
     }
 
     const handlefetchAudio=(e)=>{
       setProcessAudio(e)
+
+
+    
    
+    }
+
+    const clickToClear=()=>{
+      setProcessAudio("")
     }
 
     
@@ -239,9 +264,9 @@ return getTime
      
         </div>
         <div className={`lg:w-1/4 lg:h-auto md:w-1/4 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
-        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1`} onClick={clickToSpeak}>{clearChat}</div>
-        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1`} onClick={clickToSpeak}>{voiceIcon}</div>
-        <div className={`text-blue-300 px-1`} onClick={handleSend} >{msgEnable}</div> 
+        <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div>
+        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
+        <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 
         </div>
         <div className='w-full h-auto'>
           <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 

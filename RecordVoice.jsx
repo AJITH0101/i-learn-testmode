@@ -35,10 +35,30 @@ const RecordVoice = ({enableSpeech,stopSpeaking,audioFetched})=> {
 
     recognition.start();
 
+   
+
+  
     recognition.onend = () => {
         stopSpeaking(false)
-      };
+       //waitToSpeak()
+   //
+   };
+
+/*
+
+   const waitToSpeak=()=>{
+    recognition.start();
+    recognition.onend = () => {
+        stopSpeaking(false)
+    }
+
+   }*/
+   
   };
+
+
+
+
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
