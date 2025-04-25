@@ -11,32 +11,44 @@ const TextToSpeech = ({inputText,proceed}) => {
 
 useEffect(()=>{
 setText(inputText)
+if(!proceed){
+  handleSpeak()
+}
+
+
 },[inputText])
 
+/*
+
 useEffect(()=>{
+  console.log("inputText in TextToSpeech:", inputText);
+    console.log("proceed in TextToSpeech:", proceed);
+  
   if(!proceed){
      handleSpeak()
   }
  
 },[proceed])
+*/
 
     const handleSpeak = () => {
-        if (!text) return;
+      console.log("conversation start");
+
+      if (!text) return;
+      console.log("conversation return test", text);
     
-        const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
-
-
-        let toggleInterval = setInterval(() => {
-           setVoiceInput((prev) => !prev); // Toggle between true and false
-         }, 400); // Change every 500ms
-
-        utterance.onend = () => {
-         clearInterval(toggleInterval); // Stop toggling when speech ends
-         setVoiceInput(false); // Set it back to false when done
-         console.log("conversation over");
-         
-        };
+      const utterance = new SpeechSynthesisUtterance(text);
+    
+      // Set the event handler BEFORE speaking
+      utterance.onend = () => {
+        console.log("conversation return test 3");
+        setVoiceInput(false);
+        console.log("conversation over");
+      };
+    
+      window.speechSynthesis.cancel(); // cancel any previous speech
+      window.speechSynthesis.speak(utterance);
+      console.log("conversation return test 2");
 
     
       };
@@ -48,8 +60,8 @@ useEffect(()=>{
       <div className={`transition-transform duration-400 ease-in-out transform origin-center ${ voiceInput ? 'scale-100' : 'scale-80'  }`}>
  {voice}
 </div>
-
-       {/* <input type='text'
+{/* 
+        <input type='text'
         className="w-full p-2 text-white border border-gray-300 rounded"
         rows="4"
         placeholder="Type something to speak..."
@@ -61,7 +73,7 @@ useEffect(()=>{
         className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Speak
-      </button> */}
+      </button>  */}
     </div>
   )
 }

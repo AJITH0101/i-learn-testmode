@@ -130,7 +130,7 @@ return getTime
 
 
 
-    const handleSendData=()=>{
+    const handleSendData=(receiveData)=>{
     
       const date = new Date();
       const getTime = date.toLocaleString([], {
@@ -138,7 +138,7 @@ return getTime
         minute: "2-digit",
     });
      
-      if(getMessage.trim()==="")
+      if(receiveData.trim()==="")
         return
         
       setStatusIndicator(false)
@@ -146,7 +146,7 @@ return getTime
       setMessages(prev =>[
         ...prev,
         {
-          message: getMessage,
+          message: receiveData,
           sender: "Sani",
           sentTime: getTime,
           direction: "incoming",
@@ -209,8 +209,8 @@ return getTime
 
     const responseToText=(e)=>{
       setGetMessage(e)
-      handleSendData()
-      //console.log(e);
+      handleSendData(e)
+      console.log("response in voice",e);
       
     }
 
@@ -221,7 +221,7 @@ return getTime
       <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
       <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
 
-     <Gemini request={fullText} aiResponse={responseToText}/>
+     <Gemini request={fullText} messageArray={messages} aiResponse={responseToText}/>
         <div className="relative lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
