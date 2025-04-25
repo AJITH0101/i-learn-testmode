@@ -82,7 +82,7 @@ useEffect(()=>{
         ...prev,
         {
           message: processAudio,
-          sender: "ajith",
+          sender: "user",
           sentTime: getTime,
           direction: "outgoing",
           position: "single",   
@@ -147,7 +147,7 @@ return getTime
         ...prev,
         {
           message: receiveData,
-          sender: "Sani",
+          sender: "model",
           sentTime: getTime,
           direction: "incoming",
           position: "single",   
@@ -210,7 +210,7 @@ return getTime
     const responseToText=(e)=>{
       setGetMessage(e)
       handleSendData(e)
-      console.log("response in voice",e);
+      //console.log("response in voice",e);
       
     }
 
@@ -219,7 +219,7 @@ return getTime
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
   
       <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
-      <TextToSpeech inputText={getMessage} proceed={statusIndicator}/>
+      {/* <TextToSpeech inputText={getMessage} proceed={statusIndicator}/> */}
 
      <Gemini request={fullText} messageArray={messages} aiResponse={responseToText}/>
         <div className="relative lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">

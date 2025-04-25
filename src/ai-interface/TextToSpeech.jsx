@@ -10,15 +10,19 @@ const TextToSpeech = ({inputText,proceed}) => {
     const [voiceInput, setVoiceInput] = useState(false)
 
 useEffect(()=>{
-setText(inputText)
-if(!proceed){
-  handleSpeak()
-}
+//console.log("text to voice",inputText);
+  
+//setText(inputText)
+//if(!proceed){
+//console.log("trigger speak");
+
+  handleSpeak(inputText)
+//}
 
 
-},[inputText])
+},[inputText,proceed])
 
-/*
+
 
 useEffect(()=>{
   console.log("inputText in TextToSpeech:", inputText);
@@ -29,29 +33,34 @@ useEffect(()=>{
   }
  
 },[proceed])
-*/
 
-    const handleSpeak = () => {
-      console.log("conversation start");
 
-      if (!text) return;
-      console.log("conversation return test", text);
+
+
+    const handleSpeak = (inputTalk) => {
+      //console.log("conversation start");
+
+      if (inputText==="") return;
+     // console.log("conversation return test", inputTalk);
     
-      const utterance = new SpeechSynthesisUtterance(text);
+      const utterance = new SpeechSynthesisUtterance(inputTalk);
     
       // Set the event handler BEFORE speaking
       utterance.onend = () => {
-        console.log("conversation return test 3");
+       // console.log("conversation return test 3");
         setVoiceInput(false);
-        console.log("conversation over");
+        //console.log("conversation over");
       };
     
       window.speechSynthesis.cancel(); // cancel any previous speech
       window.speechSynthesis.speak(utterance);
-      console.log("conversation return test 2");
+      //console.log("conversation return test 2");
 
     
       };
+
+    
+      
 
   return (
     <div className="w-full h-auto  flex items-center justify-center">

@@ -2,66 +2,63 @@
 
 
 
-import React, {useState, useEffect } from 'react'
+import React, {useState, useEffect, useRef  } from 'react'
 import { GoogleGenAI } from "@google/genai";
-
-
-
-
-
-
-
+import TextToSpeech from './TextToSpeech';
 
 const Gemini = ({request,messageArray,aiResponse}) => {
 
-  const [hasFetched, setHasFetched] = useState(false);
+    const [textToTalk, setTextToTalk] = useState(false);
     const ai = new GoogleGenAI({ apiKey: "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw" });
     const dataInput = "Your name is Sani, You are a Personal English trainer.(Please do n't exceed the conversation beyond 30 wordings)" 
     
-    
+    const hasLogged = useRef(false);
 
 
-      
+      useEffect(()=>{
+        console.log(messageArray[messageArray.length-1]);
+        
+
+      },[messageArray])
      
 
     useEffect(() => {
-      // Run this ONCE when the component mounts
-      const dataInput = "Your name is Sani, You are a Personal English trainer. (Please don't exceed the conversation beyond 30 wordings)";
-      if (!hasFetched && request === "") {
-        fetchAPI(dataInput);
-        setHasFetched(true); 
+     
+      
+      if (messageArray.length===0 && !hasLogged.current) {
+        const dataInput = "Your name is Sani, You are a Personal English trainer. (Please don't exceed the conversation beyond 30 wordings)";
+        fetchAPI(dataInput)
+        hasLogged.current = true; // Set the flag to true so the log doesn't happen again
       }
-    }, [hasFetched, request]); // <-- empty dependency array means it runs only once
+       
+    
+    }, [messageArray]);
 
-/*
+
     useEffect(() => {
-      // This runs every time `request` changes, but NOT initially
+   
       if (request !== "") {
         fetchAPI(request);
       }
-    }, [request]);*/
+    }, [request]);
 
-/*
-    useEffect(()=>{
-      const limit = request 
- console.log("useEffect");
-
-        fetchAPI(limit);
-        },[request])
-        */
 
 const fetchAPI = async(req)=> {
-  console.log("request in fetchApi:",req);
-  
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: req,
-  });
+//console.log("request in fetchApi:",req);
 
-  const filteredText = response.text.replace(/\*\*/g, "");
-//console.log(filteredText);
+  try{
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: req,
+    });
+    const filteredText = response.text.replace(/\*\*/g, "");
+    setTextToTalk(filteredText)
+    aiResponse(filteredText)
+  }catch(error){
+    console.log("error occure while fetching api");   
 
- aiResponse(filteredText)
+  }
+ 
 
 }
 
@@ -69,7 +66,11 @@ const fetchAPI = async(req)=> {
 
 
   return (
-    <div className='text-white text-2xl'></div>
+    <>
+    <TextToSpeech inputText={textToTalk}/>
+     <div className='text-white text-2xl'></div>
+    </>
+   
   )
 }
 
