@@ -210,9 +210,13 @@ return getTime
     const responseToText=(e)=>{
       setGetMessage(e)
       handleSendData(e)
-      //console.log("response in voice",e);
+     console.log("response in voice",e);
       
     }
+
+
+
+    
 
     
   return (
