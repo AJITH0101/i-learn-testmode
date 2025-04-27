@@ -5,7 +5,7 @@ import aiGirl from '../assets/ai-girl.png'
 
 const voice = <BsSoundwave color='white' size={30} />
 
-const TextToSpeech = ({inputText,proceed}) => {
+const TextToSpeech = ({inputText,proceed,sendVoiceEnd}) => {
     const [text, setText] = useState("");
     const [voiceInput, setVoiceInput] = useState(false)
 
@@ -49,6 +49,7 @@ useEffect(()=>{
       utterance.onend = () => {
        // console.log("conversation return test 3");
         setVoiceInput(false);
+        sendVoiceEnd("voice end")
         //console.log("conversation over");
       };
     

@@ -45,6 +45,7 @@ const Voicechat = () => {
   const[processAudio,setProcessAudio]= useState("")
   const[voiceButton,setVoiceButton] = useState(false)
   const [fullText,setFulText]=useState("")
+  const[autoMode,setAutoMode]= useState(false)
 
  
 
@@ -55,9 +56,7 @@ const Voicechat = () => {
     
   },[])
 
-useEffect(()=>{
 
-},[])
 
     const handleSend=(e)=>{
 
@@ -192,7 +191,9 @@ return getTime
     }
 
     const handlefetchAudio=(e)=>{
-      setProcessAudio(e)
+     // setProcessAudio(e)
+     const getAudio = processAudio +" "+ e
+     setProcessAudio(getAudio)
 
 
     
@@ -214,7 +215,9 @@ return getTime
       
     }
 
-
+const enableAuto = ()=>{
+  setAutoMode((prev)=>!prev)
+}
 
     
 
@@ -226,7 +229,7 @@ return getTime
       {/* <TextToSpeech inputText={getMessage} proceed={statusIndicator}/> */}
 
      <Gemini request={fullText} messageArray={messages} aiResponse={responseToText}/>
-        <div className="relative lg:w-1/4 lg:h-3/4 md:w-1/4 md:h-3/4 w-9/10 h-8/10">
+        <div className="relative lg:w-1/3 lg:h-3/4 md:w-1/3 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
               <ConversationHeader>
@@ -238,9 +241,9 @@ return getTime
               </ConversationHeader>
 
             <MessageList>
-              <div className='w-44 h-10 fixed'>
+              {/* <div className='w-44 h-10 fixed'>
                 {statusIndicator && <TypingIndicator content='processing..'/>}   
-              </div>
+              </div> */}
             
               {/* {messages.map((msg,id)=>{<div key={id}>{msg}</div>})}  */}
               {messages.map((msg,index)=>( 
@@ -280,9 +283,17 @@ return getTime
      
      
         </div>
-        <div className={`lg:w-1/4 lg:h-auto md:w-1/4 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
-        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clearAllChat}>Clear chat</button>
-        <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div>
+        <div className={`lg:w-1/3 lg:h-auto md:w-1/3 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
+        <button
+  className={`w-28 h-8 rounded-lg border text-xs cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800 
+    ${autoMode ? "border-black text-black" : "border-stone-500 text-stone-500"}`}
+  onClick={enableAuto}
+>
+  Auto mode
+</button>
+
+        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear chat</button>
+        {/* <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div> */}
         <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
         <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 
         </div>
