@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 
 const RecordVoice = ({enableSpeech,stopSpeaking,audioFetched})=> {
    const[voiceState,setVoiceState]= useState(false)
-   const[repeatCounter,setRepeatCounter]= useState(0)
+  // const[repeatVoice,setRepeatVoice]= useState(false)
+  let repeatVoice = false
+
 
     useEffect(()=>{
         if(enableSpeech){
@@ -15,9 +17,10 @@ useEffect(()=>{
 })
 
 let recognition;
-let isRecognizing = false;
+//let isRecognizing = false;
 
 const handleSpeech = () => {
+  let muteCount = 0
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -30,42 +33,77 @@ const handleSpeech = () => {
   recognition.lang = "en-US";
   recognition.continuous = true;
   recognition.interimResults = true;
-  
 
   recognition.onresult = (event) => {
-
+    
     let fullTranscript = '';
 
+    const result = event.results[event.resultIndex];
+    let finalResultTimeout;
 
     for (let i = 0; i < event.results.length; i++) {
-      fullTranscript += event.results[i][0].transcript + ' ';
+
+       clearTimeout(finalResultTimeout);
+        fullTranscript += event.results[i][0].transcript + ' ';
+        console.log(fullTranscript);
+        audioFetched(fullTranscript);
     }
 
-
-    console.log(fullTranscript);
-    audioFetched(fullTranscript);
+    if(result.isFinal){
 
 
+        finalResultTimeout = setTimeout(() => {
+          // Optional check again if needed
+          if(result.isFinal){
+            setTimeout(() => {
+            stopSpeaking(false);
+            recognition.stop();
+            console.log("voice stopped Ajith");
+            repeatVoice = true;
+          },100); // This will run after 100ms, which is fine
+          }
+          
+        }, 2000); // Initial delay of 1 second
+   
+
+
+
+     
+        //   if(result.isFinal) {
+        // stopSpeaking(false);
+        // recognition.stop();
+        // console.log("voice stopped Ajith");
+        // repeatVoice = true  
+        //   }      
+   
+            
+    }
   };
 
-  recognition.onerror = (event) => {
+      
+
+    recognition.onerror = (event) => {
     console.log("Speech recognition error:", event.error);
-    if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-      isRecognizing = false;
-    }
+    recognition.stop();
   };
 
-  recognition.onend = () => {
-    if (isRecognizing) {
-      console.log("Restarting speech recognition...");
-      recognition.start(); // Automatically restart
-    } else {
-      stopSpeaking(false);
-      console.log("Speech recognition stopped.");
-    }
-  };
 
-  isRecognizing = true;
+  recognition.onend=()=>{
+ 
+      if(repeatVoice){
+        //recognition.start();
+            console.log("on end trigeered successfully");  
+            recognition.stop();
+            stopSpeaking(false)
+           repeatVoice = false
+            }
+            else{
+              recognition.start();
+              console.log("voice started again");  
+            }
+ 
+  }
+  
   recognition.start();
 };
 
@@ -164,10 +202,6 @@ const handleSpeech = () => {
   return (
     <>
     </>
-    // <div style={{ textAlign: "center", marginTop: "50px" }}>
-    //   <h2 className="text-white">Click to Speak</h2>
-    //   <button className="text-white border border-stone-500" onClick={handleSpeech}>Start Listening</button>
-    // </div>
   );
 }
 

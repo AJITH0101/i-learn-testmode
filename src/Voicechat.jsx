@@ -185,14 +185,15 @@ return getTime
       audio.play().catch((err) => {
         console.log("Playback failed:", err);
       });
-      console.log("voice button clicked");
+     /// console.log("voice button clicked");
 
       setVoiceButton(false)
     }
 
     const handlefetchAudio=(e)=>{
      // setProcessAudio(e)
-     const getAudio = processAudio +" "+ e
+     //const getAudio = processAudio +" "+ e
+     const getAudio =  e
      setProcessAudio(getAudio)
 
 
