@@ -9,9 +9,10 @@ const API_KEY = "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw"
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 const aiInitialTraining = "Your name is Sani, You are a Personal English trainer.(Please do n't exceed the conversation beyond 30 wordings, also please analyze the user input conversation, if there any grammar mistake, make the correction and give the correct form, do n't take this as question to answer this line, just introduce yourself)" 
 
-const Gemini = ({request,messageArray,aiResponse}) => {
+const Gemini = ({request,messageArray,aiResponse, voiceFlagSet}) => {
 
     const [textToTalk, setTextToTalk] = useState(false);
+    const[voiceFlag,setVoiceFlag] = useState(false)
     const[chatHistory,setChatHistory]=useState([
     {
       role: "user",
@@ -53,6 +54,7 @@ useEffect(()=>{
   
   if(request){
    fetchData(request,"user")
+   setVoiceFlag(false)
    }
  // fetchData(request,"user")
  //console.log(request);
@@ -115,6 +117,7 @@ const initialFetch = async () => {
         //console.log(aiFilter); 
         setTextToTalk(aiFilter) 
         aiResponse(aiFilter) 
+        voiceFlagSet(voiceFlag)
 
     } catch (error) {
       console.log("AI Error:", error);

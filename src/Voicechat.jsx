@@ -219,6 +219,10 @@ const enableAuto = ()=>{
   setAutoMode((prev)=>!prev)
 }
 
+const fetchingVoiceFlag =()=>{
+
+}
+
     
 
     
@@ -228,7 +232,7 @@ const enableAuto = ()=>{
       <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
       {/* <TextToSpeech inputText={getMessage} proceed={statusIndicator}/> */}
 
-     <Gemini request={fullText} messageArray={messages} aiResponse={responseToText}/>
+     <Gemini request={fullText} messageArray={messages} aiResponse={responseToText} voiceFlagSet={fetchingVoiceFlag}/>
         <div className="relative lg:w-1/3 lg:h-3/4 md:w-1/3 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
@@ -292,7 +296,7 @@ const enableAuto = ()=>{
   Auto mode
 </button>
 
-        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear chat</button>
+        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear input</button>
         {/* <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div> */}
         <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
         <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 

@@ -14,6 +14,63 @@ useEffect(()=>{
 
 })
 
+let recognition;
+let isRecognizing = false;
+
+const handleSpeech = () => {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    console.log("Speech Recognition not supported");
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  
+
+  recognition.onresult = (event) => {
+
+    let fullTranscript = '';
+
+
+    for (let i = 0; i < event.results.length; i++) {
+      fullTranscript += event.results[i][0].transcript + ' ';
+    }
+
+
+    console.log(fullTranscript);
+    audioFetched(fullTranscript);
+
+
+  };
+
+  recognition.onerror = (event) => {
+    console.log("Speech recognition error:", event.error);
+    if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+      isRecognizing = false;
+    }
+  };
+
+  recognition.onend = () => {
+    if (isRecognizing) {
+      console.log("Restarting speech recognition...");
+      recognition.start(); // Automatically restart
+    } else {
+      stopSpeaking(false);
+      console.log("Speech recognition stopped.");
+    }
+  };
+
+  isRecognizing = true;
+  recognition.start();
+};
+
+
+/*
 const handleSpeech = () => {
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -25,7 +82,7 @@ const handleSpeech = () => {
 
   const recognition = new SpeechRecognition();
   recognition.lang = "en-US";
-  //recognition.continuous = true;
+  recognition.continuous = true;
   recognition.interimResults = true;
 
   recognition.onresult = (event) => {
@@ -51,8 +108,6 @@ const handleSpeech = () => {
 
   recognition.start();
 
- 
-
 
   recognition.onend = () => {
       stopSpeaking(false)    
@@ -61,7 +116,7 @@ const handleSpeech = () => {
  };
  
 };
-
+*/
 
 /*
 
