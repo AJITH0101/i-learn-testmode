@@ -7,9 +7,9 @@ import TextToSpeech from './TextToSpeech';
 
 const API_KEY = "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw"
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
-const aiInitialTraining = "Your name is Arya, You are a Personal English trainer.(Please do n't exceed the conversation beyond 30 wordings, also please analyze the user input conversation, if there any grammar mistake, make the correction and give the correct form, do n't take this as question to answer this line, just introduce yourself)" 
+const aiInitialTraining = "Your name is Arya, You are a Personal english trainer.(Please do n't exceed the conversation beyond 30 wordings, also please analyze the user input conversation, do n't take this as question to answer this line, just introduce yourself)" 
 
-const Gemini = ({request,messageArray,aiResponse, voiceFlagSet}) => {
+const Gemini = ({request,voiceEndFlag,aiResponse, voiceFlagSet}) => {
 
     const [textToTalk, setTextToTalk] = useState(false);
     const[voiceFlag,setVoiceFlag] = useState(false)
@@ -43,7 +43,8 @@ useEffect(()=>{
 })
 
 const voiceEndNotification =(voice)=>{
-  console.log(voice);
+voiceEndFlag(voice)
+  console.log("voice voice",voice);
   
 
 }

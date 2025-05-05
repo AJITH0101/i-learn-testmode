@@ -27,7 +27,7 @@ import { MdOutlineKeyboardVoice } from "react-icons/md";
 import { BsSendCheck } from "react-icons/bs";
 import { BsSendX } from "react-icons/bs";
 import { MdOutlineClear } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoFlag } from "react-icons/io5";
 const voiceIcon = <MdOutlineKeyboardVoice size={28} />
 const msgEnable = <BsSendCheck size={20} />
 const msgDisable = <BsSendX size={20}/>
@@ -47,6 +47,7 @@ const Voicechat = () => {
   const [fullText,setFulText]=useState("")
   const[autoMode,setAutoMode]= useState(false)
 
+
  
 
   useEffect(()=>{
@@ -56,11 +57,57 @@ const Voicechat = () => {
     
   },[])
 
+ const voiceEndRecognized=(flag)=>{
+   // console.log("voice end recognized", flag);
+   if(flag && autoMode){
+    clickToSpeak()
+   }
+    
+  }
 
 
-    const handleSend=(e)=>{
+  const userVoiceEnded=(tranScript,flag)=>{
+    if(flag){
+     // setProcessAudio(tranScript)
+      autoSend(tranScript) 
+       console.log("Auto send check",tranScript);       
+    }
+  }
+
+  const autoSend=(transcript)=>{
+    if(transcript.trim()==="")
+      return
+    const audio = new Audio('/sendSound.wav')
+    audio.play().catch((err) => {
+      console.log("Playback failed:", err);
+    });
+
+    const date = new Date();
+    const getTime = date.toLocaleString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+});
+
+setFulText(transcript)
+setMessages(prev =>[
+  ...prev,
+  {
+    message: transcript,
+    sender: "user",
+    sentTime: getTime,
+    direction: "outgoing",
+    position: "single",   
+  
+  }
+
+])
+setProcessAudio("") 
+
+  }
 
 
+
+    const handleSend=()=>{
       if(processAudio.trim()==="")
         return
   const audio = new Audio('/sendSound.wav')
@@ -70,8 +117,8 @@ const Voicechat = () => {
 
 
 
-          const date = new Date();
-      const getTime = date.toLocaleString([], {
+        const date = new Date();
+        const getTime = date.toLocaleString([], {
         hour: "2-digit",
         minute: "2-digit",
     });
@@ -93,12 +140,6 @@ const Voicechat = () => {
        // console.log("Time",getHours,getMins);   
             
     }
-
-
-
-
-
-
 
 
     const senderTyping=(e)=>{
@@ -170,15 +211,7 @@ return getTime
 
     }
 
-    const clickToSpeak=()=>{
-      setVoiceButton(true)
-      const audio = new Audio('/mic.wav')
-      audio.play().catch((err) => {
-        console.log("Playback failed:", err);
-      });
-      console.log("voice button clicked");
-      
-    }
+   
 
     const turnOffSpeak=()=>{
       const audio = new Audio('/mic.wav')
@@ -190,16 +223,17 @@ return getTime
       setVoiceButton(false)
     }
 
+
+
+
     const handlefetchAudio=(e)=>{
      // setProcessAudio(e)
      //const getAudio = processAudio +" "+ e
      const getAudio =  e
      setProcessAudio(getAudio)
-
-
-    
-   
-    }
+     //console.log("recorded:1, process audio",getAudio);
+     }
+     
 
     const clickToClear=()=>{
       setProcessAudio("")
@@ -213,16 +247,31 @@ return getTime
       setGetMessage(e)
       handleSendData(e)
      console.log("response in voice",e);
+    
       
-    }
+
+        }
+
+
+        const clickToSpeak=()=>{
+          setVoiceButton(true)
+          const audio = new Audio('/mic.wav')
+          audio.play().catch((err) => {
+            console.log("Playback failed:", err);
+          });
+          console.log("voice button clicked");
+          
+        }
 
 const enableAuto = ()=>{
   setAutoMode((prev)=>!prev)
+ 
 }
 
 const fetchingVoiceFlag =()=>{
 
 }
+
 
     
 
@@ -230,10 +279,10 @@ const fetchingVoiceFlag =()=>{
   return (
     <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
   
-      <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio}/>
+      <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio} autoVoiceEnd={userVoiceEnded}/>
       {/* <TextToSpeech inputText={getMessage} proceed={statusIndicator}/> */}
 
-     <Gemini request={fullText} messageArray={messages} aiResponse={responseToText} voiceFlagSet={fetchingVoiceFlag}/>
+     <Gemini request={fullText} voiceEndFlag={voiceEndRecognized} aiResponse={responseToText} voiceFlagSet={fetchingVoiceFlag}/>
         <div className="relative lg:w-1/3 lg:h-3/4 md:w-1/3 md:h-3/4 w-9/10 h-8/10">
         <MainContainer>        
           <ChatContainer>           
@@ -294,7 +343,7 @@ const fetchingVoiceFlag =()=>{
     ${autoMode ? "border-black text-black" : "border-stone-500 text-stone-500"}`}
   onClick={enableAuto}
 >
-  Auto mode
+ {autoMode ? "Auto Enabled":"Auto Disabled"}
 </button>
 
         <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear input</button>
@@ -305,7 +354,6 @@ const fetchingVoiceFlag =()=>{
         <div className='w-full h-auto'>
           {/* <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
           <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button> */}
-          
         </div>
         
     </div>

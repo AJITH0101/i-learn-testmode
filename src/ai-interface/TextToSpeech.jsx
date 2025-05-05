@@ -49,8 +49,8 @@ useEffect(()=>{
       utterance.onend = () => {
        // console.log("conversation return test 3");
         setVoiceInput(false);
-        sendVoiceEnd("voice end")
-        //console.log("conversation over");
+        sendVoiceEnd(true)
+        console.log("conversation over from ai");
       };
     
       window.speechSynthesis.cancel(); // cancel any previous speech
