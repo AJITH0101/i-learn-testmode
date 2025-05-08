@@ -20,7 +20,7 @@ const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
 const closeIcon = <IoIosClose />
 
-const SignUp = ({verification}) => {
+const SignUp = ({verification,loginEnable}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -36,6 +36,10 @@ const SignUp = ({verification}) => {
        const handleFaceBookClick = async()=>{
          await handleFacebookSignIn(verification)
          
+       }
+
+       const moveToLogin=()=>{
+        loginEnable("login")
        }
 
   const handleSignup = async()=>{
@@ -78,13 +82,13 @@ const SignUp = ({verification}) => {
   <>
   <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
      <ToastContainer />
-    <div className='w-1/4 h-5/6 bg-white rounded-lg flex justify-center'>
+    <div className='lg:w-1/2 lg:h-4/5 md:w-1/2 md:h-4/5 w-[90%] h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
     <div className="w-full relative flex justify-center items-center py-2 mt-2">
-  <div className="text-xl text-center">Signup</div>
+  <div className="text-xl text-center text-black">Signup</div>
   <div className="absolute right-4 top-1 text-2xl cursor-pointer">
-     <Link to="/" > {closeIcon}
-     </Link>
+     {/* <Link to="/" > {closeIcon}
+     </Link> */}
   </div>
 </div>
 
@@ -94,7 +98,7 @@ const SignUp = ({verification}) => {
        
     <form className='w-7/8 h-10 mt-5 rounded-lg px-2 text-sm'>
     
-    <input className='w-full h-10 border border-stone-300 rounded-lg px-2 text-sm'  placeholder='Email' type='email'
+    <input className='w-full h-10 border border-stone-300 rounded-lg px-2 text-sm text-black'  placeholder='Email' type='email'
     onChange={(e) => setEmail(e.target.value)}
     autoComplete="email"
     name='email'
@@ -105,7 +109,7 @@ const SignUp = ({verification}) => {
        
         <div className="relative w-5/6 mt-5">
           <input
-            className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm"
+            className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm text-black"
             placeholder="Create password"
             type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
           />
@@ -116,13 +120,13 @@ const SignUp = ({verification}) => {
             {showPassword ? <RxEyeOpen /> : <GoEyeClosed />}
           </span>
         </div>
-        <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm' placeholder='Confirm password' type='password' value={confirm} onChange={(e) => setConfirm(e.target.value)} />
-        <button className='w-5/6 h-10 bg-blue-500 text-white rounded-md mt-5' onClick={handleSignup}>Signup</button>
-        <label className='text-xs mt-2'>
-          Already have an account?{' '}
-          <Link to="/login" className='text-blue-600 underline hover:text-blue-800'>
-            Login
-          </Link>
+        <input className='w-5/6 h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm text-black' placeholder='Confirm password' type='password' value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+        <button className='w-5/6 h-10 bg-stone-500 text-white rounded-md mt-5' onClick={handleSignup}>Signup</button>
+        <label className='text-xs mt-2 text-stone-800 flex flex-row'>
+          <div>Already have an account?&nbsp;</div>
+          {/* <Link to="/login" className='text-stone-600 underline hover:text-stone-800'> */}
+           <div onClick={moveToLogin}> Login</div>   
+          {/* </Link> */}
         </label>
 
   
@@ -137,7 +141,7 @@ const SignUp = ({verification}) => {
       </div>
 
         <div className='relative w-full h-12 flex justify-center'>
-          <button className='w-5/6 h-10 bg-blue-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
+          <button className='w-5/6 h-10 bg-stone-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
           onClick={handleFaceBookClick }>
           <img src={fbIcon} alt='google' className='w-6 h-6 ml-2' />
           Login with Facebook

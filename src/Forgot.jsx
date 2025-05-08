@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 const closeIcon = <IoIosClose />
 const facebookIcon = <IoLogoFacebook size={27}/>
 
-const Forgot = () => {
+const Forgot = ({selectLoginSignup}) => {
     const[email,setEmail] = useState("")  
     const getMailId = useSelector((state)=>state.authentic.mail)
     const dispatch = useDispatch()
@@ -26,13 +26,10 @@ const Forgot = () => {
     setEmail(getMailId)       
     },[])
 
-const handleNavigateSignup = ()=>{
-navigate("/signup")
+const handleNavigate = (value)=>{
+  selectLoginSignup(value)
 }
 
-const handleNavigateLogin = ()=>{
-navigate("/login")
-}
 
 
 
@@ -52,46 +49,64 @@ navigate("/login")
         }
     }
   return (
-    <> 
+    <>
     <div className='w-full h-[100vh] flex justify-center items-center'>
-     <ToastContainer />
-        <div className='w-2/5 h-96 bg-white px-10'>        
-
-            <div className="w-full relative flex  py-2">
-                <div className=' font-semibold text-xl mt-8 font-poppins text-stone-700'>Password Reset</div>
-              <div className="absolute right-4 top-8 text-2xl cursor-pointer">
-                 <Link to="/" > {closeIcon}
-                    </Link>
-              </div>
-            </div>
-
-            <div className='font-poppins mt-4 text-sm text-stone-500'>Provide the email address associated with your account to recover your password.</div>
-         <div className="relative w-full mt-5">
-         <input className='w-full h-10 mt-5 border border-stone-300 rounded-lg px-2 text-sm  font-poppins' placeholder='Email*' type='email' value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required/>
-                <button className='w-full h-10 bg-blue-500 text-white rounded-md mt-5 font-poppins'  onClick={handleResetPassword}>Reset Password</button>
-
-            <div className='w-full h-10 flex justify-end'>
-                <button className='w-2/10 h-9 border border-stone-500 text-sm rounded-md mt-5 text-stone-600 font-poppins' onClick={handleNavigateLogin}>
-                    Login        
-                  </button>
-                <button className='w-2/10 h-9 border border-stone-500 text-sm rounded-md mt-5 text-stone-600 ml-2 font-poppins' onClick={handleNavigateSignup}>
-                    Register
-                  </button>    
-            </div>  
-      
-           </div>
-   
-    <div className='w-full h-10 flex justify-start mt-8 font-semibold text-xs font-poppins'> <div className='mt-1'>Or sign in-with</div>
-     <img src={googleIcon} alt='google' className='w-5 h-5 ml-2 mt-1' onClick={() => dispatch(increment())} />
-    {/* <img src={fbIcon} alt='google' className='w-6 h-6 ml-2 bg-blue-600' /> */}
-    <div className='text-blue-600 ml-1'>{facebookIcon}</div>
-    </div>  
-   
+      <ToastContainer />
+      <div className='lg:w-1/2 lg:h-4/5 md:w-1/2 md:h-4/5 w-[90%] h-4/5 bg-white rounded-lg flex justify-center'>
+        <div className='w-4/5 flex flex-col items-center justify-center'>
+          
+          <div className='font-semibold text-xl mb-2 font-poppins text-stone-700 mb-4'>Password Reset</div>
+  
+          <div className='text-sm text-stone-500 text-center mb-8 font-poppins'>
+            Provide the email address associated with your account to recover your password.
+          </div>
+  
+          <input
+            className='w-full h-10 border border-stone-300 rounded-lg px-3 text-sm font-poppins mb-4'
+            placeholder='Email*'
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+  
+          <button
+            className='w-full h-10 bg-stone-500 text-white rounded-md font-poppins mb-4'
+            onClick={handleResetPassword}
+          >
+            Reset Password
+          </button>
+  
+          <div className='w-full flex justify-between gap-2 mb-6'>
+            <button
+              className='w-1/2 h-9 border border-stone-500 text-sm rounded-md text-stone-600 font-poppins'
+              onClick={()=>handleNavigate("login")}
+            >
+              Login
+            </button>
+            <button
+              className='w-1/2 h-9 border border-stone-500 text-sm rounded-md text-stone-600 font-poppins'
+              onClick={()=>handleNavigate("signup")}
+            >
+              Register
+            </button>
+          </div>
+  
+          <div className='w-full flex items-center justify-center text-xs font-poppins font-semibold text-stone-700'>
+            <div>Or sign in with</div>
+            <img
+              src={googleIcon}
+              alt='google'
+              className='w-5 h-5 ml-2 cursor-pointer'
+              onClick={() => dispatch(increment())}
+            />
+            <div className='text-blue-600 ml-2 cursor-pointer'>{facebookIcon}</div>
+          </div>
         </div>
+      </div>
     </div>
-    </>
+  </>
+  
    
   )
 }

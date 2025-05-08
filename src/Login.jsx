@@ -22,7 +22,7 @@ const eyeOpen = <RxEyeOpen />
 const eyeClosed = <GoEyeClosed />
 const closeIcon = <IoIosClose />
 
-const Login = ({verification}) => {
+const Login = ({verification,signUpTrue,forgotAccount}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -40,6 +40,13 @@ const Login = ({verification}) => {
         
       }
 
+      const forgotAcc=()=>{
+        forgotAccount("forgot")
+      }
+
+      const moveToSignup=()=>{
+        signUpTrue("signup")
+      }
 
 const  handleLogin = async()=>{
   if(email.trim() !== "" && password.trim() !== ""){
@@ -67,20 +74,20 @@ const  handleLogin = async()=>{
 
     <div className='w-full h-[100vh] flex justify-center items-center font-poppins'>
     <ToastContainer />
-    <div className='w-1/4 h-4/5 bg-white rounded-lg flex justify-center'>
+    <div className='lg:w-1/2 lg:h-4/5 md:w-1/2 md:h-4/5 w-[90%] h-4/5 bg-white rounded-lg flex justify-center'>
     <div className='w-full h-full flex flex-col items-center'>
     <div className="w-full relative flex justify-center items-center py-2 mt-2">
-  <div className="text-xl text-center">Login</div>
+  <div className="text-xl text-center text-black">Login</div>
   <div className="absolute right-4 top-1 text-2xl cursor-pointer">
-  <Link to="/" > {closeIcon}
-  </Link>
+  {/* <Link to="/" > {closeIcon}
+  </Link> */}
    
   </div>
 </div>
    
    <form className='w-7/8 h-10 mt-5 rounded-lg px-2 text-sm'>
     
-      <input className='w-full h-10 border border-stone-300 rounded-lg px-2 text-sm'  placeholder='Email' type='email'
+      <input className='w-full h-10 border border-stone-300 rounded-lg text-black px-2 text-sm'  placeholder='Email' type='email'
       onChange={(e) => setEmail(e.target.value)}
       autoComplete="email"
       name='email'
@@ -88,7 +95,7 @@ const  handleLogin = async()=>{
      </form>
     <div className="relative w-5/6 mt-5">
       <input
-        className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm"
+        className="w-full h-10 border border-stone-300 rounded-lg px-2 pr-10 text-sm text-black"
         placeholder="Create password" 
 
         type={showPassword ? 'text' : 'password'}  value={password}
@@ -104,18 +111,19 @@ const  handleLogin = async()=>{
     </div>
 
     <label className='text-xs mt-4'>    
-      <Link to="/forgot" className='text-blue-600  hover:text-blue-800'>
-      <div onClick={() => dispatch(mailid(email))} >Forgot password?</div>
+      {/* <Link to="/forgot" className='text-blue-600  hover:text-stone-800'>
+      <div onClick={() => dispatch(mailid(email))} className='text-stone-800' >Forgot password?</div>
         
-      </Link>
+      </Link> */}
+      <div className='text-stone-800'onClick={forgotAcc}>Forgot password?</div>
     </label>
  
-    <button className='w-5/6 h-10 bg-blue-500 text-white rounded-md mt-5'  onClick={handleLogin}>Login</button>
-    <label className='text-xs mt-2'>
-      Don't have an account?{' '}
-      <Link to="/signup" className='text-blue-600 underline hover:text-blue-800'>
-        Signup
-      </Link>
+    <button className='w-5/6 h-10 bg-stone-700 text-white rounded-md mt-5'  onClick={handleLogin}>Login</button>
+    <label className='text-xs mt-2 text-black flex flex-row'>
+      <div>Don't have an account?&nbsp;</div>
+      {/*{' '} <Link to="/signup" className='text-stone-500 underline hover:text-stone-800'> */}
+      <div onClick={moveToSignup}>Signup</div>        
+      {/* </Link> */}
     </label>
     <label className='text-md text-stone-500 mt-3'>Or</label>
 
@@ -127,12 +135,14 @@ const  handleLogin = async()=>{
         </button>
       </div>
         <div className='relative w-full h-12 flex justify-center'>
-        <button className='w-5/6 h-10 bg-blue-600 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
+        <button className='w-5/6 h-10 bg-stone-700 text-xs text-stone-200 rounded-md mt-2 flex items-center  gap-12'
         onClick={handleFaceBookClick}>
         <img src={fbIcon} alt='google' className='w-6 h-6 ml-2' />
         Login with Facebook
         </button>
         </div>
+
+        
      </div>
     </div>
   </div>
