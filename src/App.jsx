@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Routes, Route } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux'
-import store from './store'
+
 import SignUp from './SignUp';
 import PrivateRoute from './PrivateRoute';
 import Login from './Login'; // create this component
@@ -63,7 +62,7 @@ const App = () => {
   return (
     <>
 
-   <Provider store={store}>
+ 
 {/* <div className='w-full h-[100vh]'> */}
 
      <div className='w-full h-12 fixed z-10'>
@@ -95,7 +94,7 @@ const App = () => {
 
     </Routes>  
     {/* </div> */}
-    </Provider>
+  
   
   
     </>

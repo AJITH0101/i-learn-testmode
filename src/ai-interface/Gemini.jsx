@@ -1,13 +1,15 @@
 //https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}
 
 import axios from 'axios'
+import { useSelector } from 'react-redux';
+// import { selectTopic } from '../selectSlice';
 import React, {useState, useEffect, useRef  } from 'react'
 import { GoogleGenAI } from "@google/genai";
 import TextToSpeech from './TextToSpeech';
 
 const API_KEY = "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw"
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
-const aiInitialTraining = "Your name is Arya, You are a Personal english trainer.(Please do n't exceed the conversation beyond 30 wordings, also please analyze the user input conversation, do n't take this as question to answer this line, just introduce yourself)" 
+const aiInitialTraining = "Your name is Arya, You are a Personal english trainer.(Please do n't exceed the conversation beyond 30 wordings, don't give answers for question otherthan the part of english training, also please analyze the user input conversation,do n't take this as question to answer this line, just introduce yourself)" 
 
 const Gemini = ({request,voiceEndFlag,aiResponse, voiceFlagSet}) => {
 
@@ -24,6 +26,7 @@ const Gemini = ({request,voiceEndFlag,aiResponse, voiceFlagSet}) => {
     }
 
     ])
+   const selectedTopic = useSelector((state) => state.test);
     const ai = new GoogleGenAI({ apiKey: "AIzaSyB5e-M-zkQUQblTxrqjFRHwtzYWnyGeyyw" });
    
     const hasFetched = useRef(false);    
@@ -38,9 +41,9 @@ useEffect(()=>{
 
 },[])
 
-useEffect(()=>{
-
-})
+ useEffect(()=>{
+  console.log("selected topic recieved in Gemini",selectedTopic);  
+ },[selectedTopic])
 
 const voiceEndNotification =(voice)=>{
 voiceEndFlag(voice)
@@ -68,22 +71,7 @@ useEffect(()=>{
 const initialFetch = async () => {
   if (hasFetched.current) return;
   hasFetched.current = true;
-/*
-    const systemPrompt = {
-      role: "user",
-      parts: [
-        {
-          text: aiInitialTraining
-        }
-      ]
-    };
-  */
 
-//setChatHistory((prev)=>([...prev,systemPrompt]))
-
-
- //const updatedHistory = [systemPrompt,...chatHistory] 
- //const updatedHistory = chatHistory
   
     try {
        const response = await axios.post(
@@ -173,7 +161,7 @@ const initialFetch = async () => {
   return (
     <>
     <TextToSpeech inputText={textToTalk} sendVoiceEnd={voiceEndNotification}/>
-     <div className='text-white text-2xl'></div>
+  
     </>
    
   )

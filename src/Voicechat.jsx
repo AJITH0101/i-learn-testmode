@@ -277,18 +277,19 @@ const fetchingVoiceFlag =()=>{
 
     
   return (
-    <div className='w-full h-[100vh] flex justify-center items-center flex-col'>
+    <div className='w-full h-[100vh]'>
+      <div className='lg:w-full lg:h-4/5 md:w-full md:h-4/5 w-full h-4/5 flex justify-center items-center flex-col'>
   
       <RecordVoice enableSpeech={voiceButton} stopSpeaking={turnOffSpeak} audioFetched={handlefetchAudio} autoVoiceEnd={userVoiceEnded}/>
       {/* <TextToSpeech inputText={getMessage} proceed={statusIndicator}/> */}
 
      <Gemini request={fullText} voiceEndFlag={voiceEndRecognized} aiResponse={responseToText} voiceFlagSet={fetchingVoiceFlag}/>
-        <div className="relative lg:w-1/3 lg:h-3/4 md:w-1/3 md:h-3/4 w-9/10 h-8/10">
+        <div className="relative lg:w-full lg:h-full md:w-full md:h-full w-full h-full">
         <MainContainer>        
-          <ChatContainer>           
+          <ChatContainer  className="my-chat-container">           
               <ConversationHeader>
                 <Avatar src='/ai-girl.png'/>
-                <ConversationHeader.Content userName='Sani' info={`${statusIndicator ? "online" : `last active: ${timeStamp}`} `}>
+                <ConversationHeader.Content userName='Arya-AI' info={`${statusIndicator ? "online" : `last active: ${timeStamp}`} `}>
 
                 </ConversationHeader.Content>
                
@@ -327,7 +328,7 @@ const fetchingVoiceFlag =()=>{
               handleSend();
             }
           }}
-            >
+         >
             </MessageInput>
 
 
@@ -337,24 +338,28 @@ const fetchingVoiceFlag =()=>{
      
      
         </div>
-        <div className={`lg:w-1/3 lg:h-auto md:w-1/3 md:h-auto w-9/10 h-auto bg-white flex justify-end  items-center p-2`} >
-        <button
-  className={`w-28 h-8 rounded-lg border text-xs cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800 
-    ${autoMode ? "border-black text-black" : "border-stone-500 text-stone-500"}`}
-  onClick={enableAuto}
->
- {autoMode ? "Auto Enabled":"Auto Disabled"}
-</button>
+        </div>
+            <div className={`lg:w-full lg:h-1/5 md:w-full md:h-1/5 w-full h-1/5 bg-white flex justify-end  p-4`} >
+            <button
+                className={`w-28 h-8 rounded-lg border text-xs cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800 
+                  ${autoMode ? "border-black text-black" : "border-stone-500 text-stone-500"}`}
+                onClick={enableAuto}
+              >
+              {autoMode ? "Auto Enabled":"Auto Disabled"}
+              </button>
 
-        <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear input</button>
-        {/* <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div> */}
-        <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
-        <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 
-        </div>
-        <div className='w-full h-auto'>
-          {/* <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
-          <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button> */}
-        </div>
+            <button className='w-20 h-8 rounded-lg border border-stone-500 text-stone-500 text-xs  cursor-pointer hover:text-stone-800 mr-2 font-poppins hover:border-stone-800' onClick={clickToClear}>Clear input</button>
+            {/* <div className={`text-red-300 px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToClear}>{clearChat}</div> */}
+            <div className={`${voiceButton ? "text-red-500":"text-red-300"} px-1 pr-1 cursor-pointer hover:text-red-500`} onClick={clickToSpeak}>{voiceIcon}</div>
+            <div className={`text-blue-300 px-1 cursor-pointer hover:text-blue-500`} onClick={handleSend} >{msgEnable}</div> 
+            </div>
+            {/* <div className='w-full h-auto'>
+              <input type='text' className='w-38 h-12 border border-stone-500 text-white' value={getMessage} onChange={(e)=>senderTyping(e.target.value)}/> 
+              <button className='w-24 h-10 border border-stone-500 text-white' onClick={handleSendData}>send</button> 
+          
+          </div>*/}
+
+        
         
     </div>
   )

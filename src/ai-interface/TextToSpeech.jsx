@@ -64,12 +64,13 @@ useEffect(()=>{
       
 
   return (
-    <div className="w-full h-auto  flex items-center justify-center">
-      <h2 className="text-xl font-bold mb-2">Text to Speech</h2>
+    <>
+      {/* <div className="w-full h-auto "> */}
+     {/*<h2 className="text-xl font-bold mb-2">Text to Speech</h2> */}
       {/* <img src={aiGirl} alt='girl image' className='w-20 h-20' /> */}
-      <div className={`transition-transform duration-400 ease-in-out transform origin-center ${ voiceInput ? 'scale-100' : 'scale-80'  }`}>
+      {/* <div className={`transition-transform duration-400 ease-in-out transform origin-center ${ voiceInput ? 'scale-100' : 'scale-80'  }`}>
  {voice}
-</div>
+</div> */}
 {/* 
         <input type='text'
         className="w-full p-2 text-white border border-gray-300 rounded"
@@ -83,8 +84,9 @@ useEffect(()=>{
         className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Speak
-      </button>  */}
-    </div>
+      </button>  
+    </div>*/}
+    </>
   )
 }
 
