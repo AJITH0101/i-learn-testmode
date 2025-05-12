@@ -77,7 +77,7 @@ else{
       <div className='lg:w-1/4 lg:h-full md:w-1/4 md:h-full w-full h-full bg-stone-300  flex lg:flex-col md:flex-col flex-row'>
       <div className='w-full h-full'>
         <div className='flex flex-row lg:flex-col md:flex-col'>
-      <button className='w-28 h-8 border border-stone-500 rounded-sm text-sm m-2 lg:ml-4 md:ml-4 z-50' onClick={selectTopic}>Back</button>
+      <button className='w-28 h-8 border border-stone-500 rounded-sm text-sm m-2 lg:ml-4 md:ml-4 z-50' onClick={backToHome}>Back</button>
           <div className='lg:w-[80%] lg:h-8 md:w-[80%] md:h-8 w-1/2 h-8 ml-4 border border-stone-500 rounded-sm text-stone-800 text-sm font-poppins flex items-center pl-2 mt-2'>
             <div className='lg:w-3/4 md:w-1/2 w-3/4 text-sm lg:text-xs md:text-xs '>{topic}</div>
             <div 
