@@ -39,12 +39,12 @@ const Gemini = ({request,voiceEndFlag,aiResponse, voiceFlagSet}) => {
 
 
 useEffect(()=>{   
- //initialFetch(aiInitialTraining_1);
+ initialFetch(aiInitialTraining_1);
 },[])
 
  useEffect(()=>{
   
-
+/*
   console.log("chat history cleared");
   let initialPrompt
  
@@ -64,7 +64,7 @@ useEffect(()=>{
     initialPrompt = aiInitialTraining_5;
   }
 
- fetchData(initialPrompt)
+ fetchData(initialPrompt)*/
 
  },[selectedTopic])
 

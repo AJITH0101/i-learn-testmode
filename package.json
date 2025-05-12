@@ -1,5 +1,6 @@
 {
   "name": "i-learn-app",
+  "homepage": "https://AJITH0101.github.io/i-learn-testmode",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy":"npm run build",  
+     "deploy": "./node_modules/.bin/gh-pages -d dist"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
@@ -20,6 +23,7 @@
     "assemblyai": "^4.9.0",
     "axios": "^1.9.0",
     "firebase": "^11.6.0",
+    "gh-pages": "^6.3.0",
     "lamejs": "^1.2.1",
     "mic-recorder-to-mp3": "^2.2.2",
     "react": "^19.1.0",

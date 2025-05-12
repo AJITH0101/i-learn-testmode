@@ -288,7 +288,8 @@ const fetchingVoiceFlag =()=>{
         <MainContainer>        
           <ChatContainer  className="my-chat-container">           
               <ConversationHeader>
-                <Avatar src='/ai-girl.png'/>
+                {/* <Avatar src='/ai-girl.png'/> */}
+                {/* <img src="/ai-girl.png" alt="test" width="50" height="50" /> */}
                 <ConversationHeader.Content userName='Arya-AI' info={`${statusIndicator ? "online" : `last active: ${timeStamp}`} `}>
 
                 </ConversationHeader.Content>
